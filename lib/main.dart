@@ -5,6 +5,8 @@ import 'package:e_commerce/screens/admin/add_product.dart';
 import 'package:e_commerce/screens/admin/edit_product.dart';
 import 'package:e_commerce/screens/admin/manage_product.dart';
 import 'package:e_commerce/screens/admin/menu.dart';
+import 'package:e_commerce/screens/admin/order_details_screen.dart';
+import 'package:e_commerce/screens/admin/orders_screen.dart';
 import 'package:e_commerce/screens/user/cart_screen.dart';
 import 'package:e_commerce/screens/user/home_screen.dart';
 import 'package:e_commerce/screens/login_screen.dart';
@@ -33,8 +35,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => AdminMode()),
       ],
       child: MaterialApp(
-        initialRoute: Home.routeName,
+        initialRoute: Menu.routeName,
         routes: {
+          OrderDetails.routName: (context) => const OrderDetails(),
+          OrderScreen.routName: (context) => const OrderScreen(),
           CartScreen.routName: (context) => const CartScreen(),
           ProductInof.routName: (context) => const ProductInof(),
           Home.routeName: (context) => const Home(),

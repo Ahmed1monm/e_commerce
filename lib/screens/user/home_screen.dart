@@ -132,6 +132,7 @@ class _HomeState extends State<Home> {
 
   Widget jacets() {
     // var id;
+
     return StreamBuilder<QuerySnapshot>(
       // here I am load all products
       stream: _store.loadProducts(),
@@ -148,16 +149,6 @@ class _HomeState extends State<Home> {
                 data[kProductPrice],
                 data[kProductCategory],
                 null));
-
-            /* **************************************************************** */
-
-            // generalProducts.add(ProductModel(
-            //     data[kProductName],
-            //     data[kProductDescription],
-            //     data[kProductLocation],
-            //     data[kProductPrice],
-            //     data[kProductCategory]),
-            //     );
           }
           // here i am finish loading
 

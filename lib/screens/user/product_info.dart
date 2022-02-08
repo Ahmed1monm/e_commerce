@@ -165,10 +165,22 @@ class _ProductInofState extends State<ProductInof> {
                     ),
                     onPressed: () {
                       product.quantity = _quantity;
-                      Provider.of<CartProvider>(context, listen: false)
-                          .addToCrt(product);
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text('Product added successfully')));
+                      var existProducts =
+                          Provider.of<CartProvider>(context, listen: false)
+                              .products;
+
+                      if (existProducts.contains(product)) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('You already added this product')));
+                      } else {
+                        Provider.of<CartProvider>(context, listen: false)
+                            .addToCrt(product);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Product added successfully')));
+                      }
                     },
                   ),
                 ),

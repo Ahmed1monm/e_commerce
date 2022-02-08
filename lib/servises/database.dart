@@ -25,4 +25,31 @@ class MyStore {
   editProduct(data, var docId) {
     _firestore.collection(kProductsCollection).doc(docId).update(data);
   }
+
+  storeOrders(data, List<ProductModel> products) {
+    var docRef = _firestore.collection(kOrders).doc();
+    docRef.set(data);
+
+    for (var product in products) {
+      docRef.collection(kOrderDetails).doc().set({
+        kProductName: product.pName,
+        kProductPrice: product.pPrice,
+        kProductQuantity: product.quantity,
+        kProductCategory: product.pCategory,
+        kProductLocation: product.pImageLocat,
+      });
+    }
+  }
+
+  Stream<QuerySnapshot> loadOrders() {
+    return _firestore.collection(kOrders).snapshots();
+  }
+
+  Stream<QuerySnapshot> loadOrderDetails(documentId) {
+    return _firestore
+        .collection(kOrders)
+        .doc(documentId)
+        .collection(kOrderDetails)
+        .snapshots();
+  }
 }

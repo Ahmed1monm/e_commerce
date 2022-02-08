@@ -1,6 +1,7 @@
 import 'package:e_commerce/constants.dart';
 import 'package:e_commerce/screens/admin/add_product.dart';
 import 'package:e_commerce/screens/admin/manage_product.dart';
+import 'package:e_commerce/screens/admin/orders_screen.dart';
 import 'package:flutter/material.dart';
 
 class Menu extends StatelessWidget {
@@ -36,9 +37,11 @@ class Menu extends StatelessWidget {
             ),
             MaterialButton(
               color: kSecondaryColor,
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(OrderScreen.routName);
+              },
               child: const Text(
-                'View Product',
+                'View Orders',
               ),
             ),
           ],
