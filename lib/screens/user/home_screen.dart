@@ -3,11 +3,15 @@ import 'package:e_commerce/constants.dart';
 import 'package:e_commerce/models/product_model.dart';
 import 'package:e_commerce/screens/user/cart_screen.dart';
 import 'package:e_commerce/screens/user/product_info.dart';
+import 'package:e_commerce/servises/auth.dart';
 import 'package:e_commerce/servises/database.dart';
 import 'package:e_commerce/widgets/category_product_home_show.dart';
 import 'package:e_commerce/widgets/category_tab_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../login_screen.dart';
 
 class Home extends StatefulWidget {
   static String routeName = 'HomeScreen';
@@ -22,6 +26,7 @@ class _HomeState extends State<Home> {
   int _tabBarIndex = 0;
   int _bottomBarIndex = 0;
   final _store = MyStore();
+  final MyAuth _myAuth = MyAuth();
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -32,7 +37,14 @@ class _HomeState extends State<Home> {
             bottomNavigationBar: BottomNavigationBar(
               currentIndex: _bottomBarIndex,
               type: BottomNavigationBarType.fixed,
-              onTap: (value) {
+              onTap: (value) async {
+                if (value == 2) {
+                  SharedPreferences pref =
+                      await SharedPreferences.getInstance();
+                  pref.clear();
+                  await _myAuth.signOut();
+                  Navigator.popAndPushNamed(context, LoginScreen.routName);
+                }
                 setState(() {
                   _bottomBarIndex = value;
                 });

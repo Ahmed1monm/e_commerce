@@ -3,12 +3,14 @@ import 'dart:ui';
 import 'package:e_commerce/provider/admin_mode.dart';
 import 'package:e_commerce/provider/model_hud.dart';
 import 'package:e_commerce/screens/register_screen.dart';
+import 'package:e_commerce/screens/user/home_screen.dart';
 import 'package:e_commerce/servises/auth.dart';
 import 'package:e_commerce/widgets/custom_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:e_commerce/constants.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   static String routName = 'login';
@@ -20,6 +22,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool keepMeLoggedIn = false;
   final String _adminPassword = 'Admin1234';
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -58,9 +61,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       hint: 'Enter your email',
                       icon: Icons.email_rounded),
-                  SizedBox(
-                    height: height * 0.02,
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                            value: keepMeLoggedIn,
+                            onChanged: (value) {
+                              setState(() {
+                                keepMeLoggedIn = value!;
+                              });
+                            }),
+                        const Text(
+                          'Remmember me',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
+                  // SizedBox(
+                  //   height: height * 0.02,
+                  // ),
                   CustomTextField(
                       onClick: (value) {
                         password = value;
@@ -76,6 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       color: Colors.black,
                       onPressed: () {
+                        if (keepMeLoggedIn == true) {
+                          keepUserLoggedIn();
+                          Navigator.of(context).pushNamed(Home.routeName);
+                        }
                         _validate();
                       },
                       child: const Text(
@@ -188,5 +215,10 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
     _modelHud.loadingChange(false);
+  }
+
+  void keepUserLoggedIn() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    preferences.setBool(kKeepMeLoggedIn, keepMeLoggedIn);
   }
 }
